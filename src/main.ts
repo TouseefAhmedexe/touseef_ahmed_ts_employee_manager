@@ -91,7 +91,8 @@ function renderList(): void {
 }
 
 function fillEditForm(employee: Employee | undefined): void {
-    const { status = "Active", salary = "", contact } = employee ?? {};
+    const fallback: Partial<Employee> = {};
+    const { status = "Active", salary = "", contact } = employee ?? fallback;
 
     el.editStatus.value = status;
     el.editSalary.value = String(salary);

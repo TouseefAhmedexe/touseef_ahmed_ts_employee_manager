@@ -17,7 +17,7 @@ export function createIdGenerator(lastUsedId: number = 0): () => number {
     };
 }
 
-export function filterBy<T>(property: keyof T): (value: T[keyof T] | "all") => (list: T[]) => T[] {
+export function filterBy<T, K extends keyof T>(property: K): (value: T[K] | "all") => (list: T[]) => T[] {
     return (value) => (list) =>
         value === "all" ? list : list.filter((item) => item[property] === value);
 }

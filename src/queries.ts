@@ -38,8 +38,8 @@ export function findEmployee(employees: Employee[], id: number): Employee | unde
 
 export function selectEmployees(employees: Employee[], { department, status, sort }: Filters): Employee[] {
     return pipe<Employee[]>(
-        filterBy<Employee>("department")(department as Employee["department"]),
-        filterBy<Employee>("status")(status as Employee["status"]),
+        filterBy<Employee, "department">("department")(department as Employee["department"]),
+        filterBy<Employee, "status">("status")(status as Employee["status"]),
         sortWith(SORTERS[sort as SortKey] ?? SORTERS.name)
     )(employees);
 }

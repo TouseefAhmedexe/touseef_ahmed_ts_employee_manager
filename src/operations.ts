@@ -44,10 +44,11 @@ export function updateContact(
 ): Employee[] {
     return updateEmployeeWith(employees, id, (employee) => {
         const contact = employee.contact ?? { email: "" };
+        const hasChange = (Object.entries(contactChanges) as Array<[string, string]>).some(
+            ([key, value]) => contact[key as keyof typeof contact] !== value
+        );
 
-        return differs({ ...employee, ...contactChanges }, contactChanges as Partial<Employee>)
-            ? { ...employee, contact: { ...contact, ...contactChanges } }
-            : employee;
+        return hasChange ? { ...employee, contact: { ...contact, ...contactChanges } } : employee;
     });
 }
 

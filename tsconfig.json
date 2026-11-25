@@ -8,8 +8,6 @@
     "strictNullChecks": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "outDir": "./dist",
-    "rootDir": "./src",
     "lib": ["ES2020", "DOM"]
   },
   "include": ["src"]
