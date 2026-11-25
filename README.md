@@ -73,5 +73,5 @@ The compiler writes `.js` files to `dist/`. Open index.html with Live Server to 
 
 ## How to run without building
 
-Open the folder in Visual Studio Code and use Live Server pointed at index.html.
-Browsers do not execute TypeScript directly, so the build step is required first.
+Open the folder in Visual Studio Code and use Live Server pointed at index.html
+Browsers do not execute TypeScript directly, so the build step is required first
