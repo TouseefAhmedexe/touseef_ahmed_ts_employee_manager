@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Employee and department manager that practices immutable updates, destructuring, spread, closures and array methods.">
+    <meta name="author" content="Touseef Ahmed">
+    <link rel="stylesheet" href="/style.css">
+    <title>Employee Manager | Immutability Practice</title>
+</head>
+
+<body>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+
+    <header class="site-header">
+        <h1>Employee and Department Manager</h1>
+        <p>The employee list is one array. Every change builds a new array and leaves the old one untouched, which is what makes the Undo button possible. All names and numbers are sample data, and nothing is saved when you reload the page.</p>
+    </header>
+
+    <main class="page" id="main-content" tabindex="-1">
+
+        <section class="panel" aria-labelledby="employees-title">
+            <h2 id="employees-title" tabindex="-1">Employees</h2>
+
+            <form class="filters" id="filter-form" role="search">
+                <div class="field">
+                    <label for="filter-department">Department</label>
+                    <select id="filter-department" name="department"></select>
+                </div>
+
+                <div class="field">
+                    <label for="filter-status">Status</label>
+                    <select id="filter-status" name="status"></select>
+                </div>
+
+                <div class="field">
+                    <label for="filter-sort">Sort by</label>
+                    <select id="filter-sort" name="sort"></select>
+                </div>
+            </form>
+
+            <p class="result-count" id="result-count" role="status"></p>
+
+            <p class="empty" id="empty-state" hidden><span id="empty-text"></span></p>
+
+            <div class="table-wrap" id="table-wrap">
+                <table class="data-table">
+                    <caption class="visually-hidden">Employees that match the filters</caption>
+
+                    <thead>
+                        <tr>
+                            <th scope="col" class="num">ID</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Department</th>
+                            <th scope="col">Status</th>
+                            <th scope="col" class="num">Salary</th>
+                            <th scope="col">Manager</th>
+                            <th scope="col">Phone</th>
+                            <th scope="col" class="num">Bonus</th>
+                            <th scope="col">Skills</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="table-body"></tbody>
+                </table>
+            </div>
+
+            <div class="button-row">
+                <button class="btn btn--secondary" type="button" id="undo-button" disabled>Undo last change</button>
+                <button class="btn btn--secondary" type="button" id="reset-button">Reset to the sample data</button>
+            </div>
+
+            <p class="message" id="message" role="status"></p>
+        </section>
+
+        <div class="columns">
+
+            <section class="panel" aria-labelledby="add-title">
+                <h2 id="add-title">Add an employee</h2>
+
+                <form class="stack" id="add-form">
+                    <div class="field">
+                        <label for="add-name">Name</label>
+                        <input type="text" id="add-name" name="name" placeholder="Example: Sana Iqbal" autocomplete="off">
+                    </div>
+
+                    <div class="field">
+                        <label for="add-email">Email address</label>
+                        <input type="text" id="add-email" name="email" placeholder="name@example.com" autocomplete="off">
+                    </div>
+
+                    <div class="field">
+                        <label for="add-department">Department</label>
+                        <select id="add-department" name="department"></select>
+                    </div>
+
+                    <div class="field">
+                        <label for="add-salary">Salary per year (USD)</label>
+                        <input type="number" id="add-salary" name="salary" step="any" placeholder="Example: 65000">
+                    </div>
+
+                    <div class="field">
+                        <label for="add-status">Status</label>
+                        <select id="add-status" name="status"></select>
+                    </div>
+
+                    <div class="field">
+                        <label for="add-phone">Phone (optional)</label>
+                        <input type="text" id="add-phone" name="phone" placeholder="0300-1234567" autocomplete="off">
+                    </div>
+
+                    <div class="field">
+                        <label for="add-skills">Skills (optional, separated by commas)</label>
+                        <input type="text" id="add-skills" name="skills" placeholder="css, html" autocomplete="off">
+                    </div>
+
+                    <ul class="problem-list" id="add-problems" hidden></ul>
+
+                    <div class="button-row">
+                        <button class="btn" type="submit">Add employee</button>
+                    </div>
+                </form>
+            </section>
+
+            <section class="panel" aria-labelledby="edit-title">
+                <h2 id="edit-title" tabindex="-1">Update an employee</h2>
+                <p class="hint">Choose an employee, change what you want, and apply. The employee, and only the parts you change, are replaced with new objects.</p>
+
+                <form class="stack" id="edit-form">
+                    <div class="field">
+                        <label for="edit-select">Employee</label>
+                        <select id="edit-select" name="employee"></select>
+                    </div>
+
+                    <div class="field">
+                        <label for="edit-status">Status</label>
+                        <select id="edit-status" name="status"></select>
+                    </div>
+
+                    <div class="field">
+                        <label for="edit-salary">Salary per year (USD)</label>
+                        <input type="number" id="edit-salary" name="salary" step="any">
+                    </div>
+
+                    <div class="field">
+                        <label for="edit-phone">Phone (an empty field keeps the current phone)</label>
+                        <input type="text" id="edit-phone" name="phone" autocomplete="off">
+                    </div>
+
+                    <div class="field">
+                        <label for="edit-skills">Add skills (separated by commas)</label>
+                        <input type="text" id="edit-skills" name="skills" placeholder="testing, sql" autocomplete="off">
+                    </div>
+
+                    <div class="button-row">
+                        <button class="btn" type="submit" id="apply-button">Apply changes</button>
+                    </div>
+                </form>
+            </section>
+
+        </div>
+
+        <section class="panel" aria-labelledby="summary-title">
+            <h2 id="summary-title">Department summary</h2>
+            <p class="hint">Calculated with <code>reduce</code> from the current employee array.</p>
+
+            <div class="table-wrap">
+                <table class="data-table">
+                    <caption class="visually-hidden">Employees and salary totals for each department</caption>
+
+                    <thead>
+                        <tr>
+                            <th scope="col">Department</th>
+                            <th scope="col" class="num">Employees</th>
+                            <th scope="col" class="num">Salary total</th>
+                            <th scope="col" class="num">Average salary</th>
+                            <th scope="col" class="num">Share of salaries</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="summary-body"></tbody>
+                    <tfoot id="summary-foot"></tfoot>
+                </table>
+            </div>
+        </section>
+
+        <section class="panel" aria-labelledby="checks-title">
+            <h2 id="checks-title">Checks with some and every</h2>
+            <ul class="check-list" id="check-list"></ul>
+
+            <h3>Could a department be closed?</h3>
+            <p class="hint">A department can be closed when every employee in it is inactive.</p>
+            <ul class="check-list" id="closable-list"></ul>
+        </section>
+
+        <section class="panel" aria-labelledby="demos-title">
+            <h2 id="demos-title">Why direct mutation causes problems</h2>
+            <p>Each example below runs real code when the page loads, on fresh copies of the sample data. The employees in the table above are frozen and are never changed by these examples.</p>
+            <div id="demo-container"></div>
+        </section>
+
+        <section class="panel" aria-labelledby="concepts-title">
+            <h2 id="concepts-title">Other concepts at work</h2>
+            <p>Small live examples of the other topics. The results are calculated when the page loads.</p>
+            <div id="concept-container"></div>
+        </section>
+    </main>
+
+    <noscript>
+        <p class="alert">This page needs JavaScript to show the employees.</p>
+    </noscript>
+
+    <footer class="site-footer">
+        <p><small>&copy; 2026 Touseef Ahmed</small></p>
+    </footer>
+
+    <script type="module" src="/src/main.ts"></script>
+</body>
+
+</html>
