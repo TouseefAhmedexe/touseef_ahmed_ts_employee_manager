@@ -161,8 +161,9 @@ function demoThis(): DemoSection {
             return (this as { name?: string })?.name ?? "this is undefined";
         },
         listRegular() {
+            const self = this as { name?: string } | undefined;
             return this.members.map(function (member) {
-                return `${member} (${(this as { name?: string } | undefined)?.name ?? "this is undefined"})`;
+                return `${member} (${self?.name ?? "this is undefined"})`;
             });
         },
         listArrow() {
