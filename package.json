@@ -1,0 +1,13 @@
+{
+  "name": "touseef_ahmed_ts_employee_manager",
+  "version": "1.0.0",
+  "description": "Employee manager converted to TypeScript. FE04 of my Bloomrix internship.",
+  "author": "Touseef Ahmed",
+  "license": "ISC",
+  "scripts": {
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3"
+  }
+}
